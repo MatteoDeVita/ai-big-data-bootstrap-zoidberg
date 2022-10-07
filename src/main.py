@@ -1,10 +1,11 @@
-from MNISTMatrix import MNISTMatrix
+from MNISTManager import MNISTManager
 import os
 
-matrix = MNISTMatrix(
+mnistData = MNISTManager(
     os.path.dirname(os.path.abspath(__file__)) + "/../datasets/train-images-idx3-ubyte.gz",
     os.path.dirname(os.path.abspath(__file__)) + "/../datasets/train-labels-idx1-ubyte.gz",
     os.path.dirname(os.path.abspath(__file__)) + "/../datasets/t10k-images-idx3-ubyte.gz",
     os.path.dirname(os.path.abspath(__file__)) + "/../datasets/t10k-labels-idx1-ubyte.gz",
 )
-matrix.show(59999)
+
+mnistData.displayDigitsMean()
