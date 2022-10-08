@@ -1,5 +1,6 @@
 import gzip
 from pickletools import uint8
+from turtle import color
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -47,10 +48,20 @@ class MNISTManager():
 
     def displayLabelStatsGraph(self, datasetType):
         _, ax = plt.subplots()
+        labelStats = self.getLabelStats(datasetType)
+        barColors = ["tab:blue" for _ in range(10)]
+        barColors[np.argmin(labelStats)] = "tab:red"
+        barColors[np.argmax(labelStats)] = "tab:green"
         ax.bar(
             range(10),
-            self.getDigitsMean(datasetType),
-            label = [str(x) for x in range(10)]            
+            labelStats,
+            label = [str(x) for x in range(10)],
+            color = barColors,
+            alpha = 0.7                      
         )
+        for index, value in enumerate(labelStats):
+            ax.text(index - 0.415, value - (value * 0.1), str(value), color="black", fontweight='bold', alpha=0.7)
+        ax.set_ylabel("Occurences")
+        ax.set_title("Occurences by digit")
         plt.show()
 
