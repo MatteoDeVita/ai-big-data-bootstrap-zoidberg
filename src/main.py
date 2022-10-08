@@ -8,4 +8,7 @@ mnistData = MNISTManager(
     os.path.dirname(os.path.abspath(__file__)) + "/../datasets/t10k-labels-idx1-ubyte.gz",
 )
 
-mnistData.displayDigitsMean()
+print(mnistData.getLabelStats("training"))
+print(mnistData.getLabelStats("testing"))
+print(mnistData.getDigitsMean("training"))
+print(mnistData.getDigitsMean("testing"))

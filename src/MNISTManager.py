@@ -28,28 +28,18 @@ class MNISTManager():
         fileBuffer = gzip.open(path,'r')      
         fileBuffer.read(8)
         return np.frombuffer(fileBuffer.read(size), dtype=np.uint8).astype(np.uint64)
+    
+    #datasetType = "training" or "testing"
+    def getLabelStats(self, datasetType): return [np.count_nonzero(self.trainingLabels == i) for i in range(10)] if datasetType == "training" else [np.count_nonzero(self.testingLabels == i) for i in range(10)]
 
-    def displayLabelStats(self):
-        def _displayLabelStatByDatasetType(datasetType): #datasetType = "training" or "testing"
-            data = self.trainingLabels if datasetType == "training" else self.testingLabels
-            print(f"Occurences in {datasetType} dataset :")
-            for i in range(10):
-                print(f"{i} -> {np.count_nonzero(data == i)}")
-        _displayLabelStatByDatasetType("training")
-        _displayLabelStatByDatasetType("testing")
-
-    def displayDigitsMean(self):
-        def _displayDigitsMeanByDatasetType(datasetType): #datasetType = "training" or "testing"
-            data = self.trainingLabels if datasetType == "training" else self.testingLabels
-            greyAdditions = [0.0] * 10
-            for i in range(len(data)):
-                greyAdditions[self.trainingLabels[i]] += np.mean(self.trainingImages[i])
-            print(f"Digits mean in {datasetType} dataset :")
-            for i in range(10):
-                print(f"{i} -> {greyAdditions[i] / np.count_nonzero(data == i)}")
-        _displayDigitsMeanByDatasetType("training")
-        _displayDigitsMeanByDatasetType("testing")
-
+    #datasetType = "training" or "testing"
+    def getDigitsMean(self, datasetType):
+        (labels, images) = (self.trainingLabels, self.trainingImages) if datasetType == "training" else (self.testingLabels, self.testingImages)
+        greyMeans = [0.0] * 10
+        for i in range(len(images)):
+            greyMeans[labels[i]] += np.mean(images[i])
+        return [greyMeans[i] / np.count_nonzero(labels == i) for i in range(10)] #divide each value by the total number of the digit to get the mean value
+        
     def show(self, index, datasetType): #datasetType = "training" or "testing"
         image = np.asarray(self.trainingImages[index]).squeeze() if datasetType == "training" else  np.asarray(self.testingImages[index]).squeeze()
         plt.imshow(image)
