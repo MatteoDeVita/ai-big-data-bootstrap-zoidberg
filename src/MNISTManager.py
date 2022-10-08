@@ -45,4 +45,12 @@ class MNISTManager():
         plt.imshow(image)
         plt.show()
 
-    
+    def displayLabelStatsGraph(self, datasetType):
+        _, ax = plt.subplots()
+        ax.bar(
+            range(10),
+            self.getDigitsMean(datasetType),
+            label = [str(x) for x in range(10)]            
+        )
+        plt.show()
+
