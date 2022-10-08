@@ -8,5 +8,5 @@ mnistData = MNISTManager(
     os.path.dirname(os.path.abspath(__file__)) + "/../datasets/t10k-labels-idx1-ubyte.gz",
 )
 
-mnistData.displayGraph("labelStats" "training")
-mnistData.displayGraph("digitMeans" "testing")
+mnistData.displayGraph("labelStats", "training")
+mnistData.displayGraph("digitMeans", "testing")

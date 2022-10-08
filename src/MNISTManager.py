@@ -46,11 +46,9 @@ class MNISTManager():
         plt.imshow(image)
         plt.show()
 
-
-
     def displayGraph(self, graphType, datasetType): #graphType = 'labelStats" or 'digitMeans' dataseType = 'training' or 'testing'
         _, ax = plt.subplots()
-        data = self.getLabelStats(datasetType) if graphType == 'labelStats' else getDigitsMean(dataseType)
+        data = self.getLabelStats(datasetType) if graphType == 'labelStats' else self.getDigitsMean(datasetType)
         barColors = ["tab:blue" for _ in range(10)]
         barColors[np.argmin(data)] = "tab:red"
         barColors[np.argmax(data)] = "tab:green"
@@ -62,7 +60,7 @@ class MNISTManager():
             alpha = 0.7                      
         )
         for index, value in enumerate(data):
-            ax.text(index - 0.415, value - (value * 0.1), str(round(value, 1)) color="black", fontweight='bold', alpha=0.7)
-        ax.set_ylabel("Occurences")
-        ax.set_title("Occurences by digit")
+            ax.text(index - 0.415, value - (value * 0.1), str(round(value, 1)), color="black", fontweight='bold', alpha=0.7)
+        ax.set_ylabel("Occurences" if graphType == 'labelStats' else "Means")
+        ax.set_title(("Occurences" if graphType == 'labelStats' else "Means") + " by digits")
         plt.show()
