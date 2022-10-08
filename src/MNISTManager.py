@@ -65,3 +65,21 @@ class MNISTManager():
         ax.set_title("Occurences by digit")
         plt.show()
 
+    def displayDigitMeansGraph(self, datasetType):
+        _, ax = plt.subplots()
+        digitMeans = self.getDigitsMean(datasetType)
+        barColors = ["tab:blue" for _ in range(10)]
+        barColors[np.argmin(digitMeans)] = "tab:red"
+        barColors[np.argmax(digitMeans)] = "tab:green"
+        ax.bar(
+            range(10),
+            digitMeans,
+            label = [str(x) for x in range(10)],
+            color = barColors,
+            alpha = 0.7                      
+        )
+        for index, value in enumerate(digitMeans):
+            ax.text(index - 0.415, value - (value * 0.1), str(round(value, 1)), color="black", fontweight='bold', alpha=0.7)
+        ax.set_ylabel("Means")
+        ax.set_title("Means by digit")
+        plt.show()
