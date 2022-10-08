@@ -46,40 +46,23 @@ class MNISTManager():
         plt.imshow(image)
         plt.show()
 
-    def displayLabelStatsGraph(self, datasetType):
+
+
+    def displayGraph(self, graphType, datasetType): #graphType = 'labelStats" or 'digitMeans' dataseType = 'training' or 'testing'
         _, ax = plt.subplots()
-        labelStats = self.getLabelStats(datasetType)
+        data = self.getLabelStats(datasetType) if graphType == 'labelStats' else getDigitsMean(dataseType)
         barColors = ["tab:blue" for _ in range(10)]
-        barColors[np.argmin(labelStats)] = "tab:red"
-        barColors[np.argmax(labelStats)] = "tab:green"
+        barColors[np.argmin(data)] = "tab:red"
+        barColors[np.argmax(data)] = "tab:green"
         ax.bar(
             range(10),
-            labelStats,
+            data,
             label = [str(x) for x in range(10)],
             color = barColors,
             alpha = 0.7                      
         )
-        for index, value in enumerate(labelStats):
-            ax.text(index - 0.415, value - (value * 0.1), str(value), color="black", fontweight='bold', alpha=0.7)
+        for index, value in enumerate(data):
+            ax.text(index - 0.415, value - (value * 0.1), str(round(value, 1)) color="black", fontweight='bold', alpha=0.7)
         ax.set_ylabel("Occurences")
         ax.set_title("Occurences by digit")
-        plt.show()
-
-    def displayDigitMeansGraph(self, datasetType):
-        _, ax = plt.subplots()
-        digitMeans = self.getDigitsMean(datasetType)
-        barColors = ["tab:blue" for _ in range(10)]
-        barColors[np.argmin(digitMeans)] = "tab:red"
-        barColors[np.argmax(digitMeans)] = "tab:green"
-        ax.bar(
-            range(10),
-            digitMeans,
-            label = [str(x) for x in range(10)],
-            color = barColors,
-            alpha = 0.7                      
-        )
-        for index, value in enumerate(digitMeans):
-            ax.text(index - 0.415, value - (value * 0.1), str(round(value, 1)), color="black", fontweight='bold', alpha=0.7)
-        ax.set_ylabel("Means")
-        ax.set_title("Means by digit")
         plt.show()
