@@ -14,13 +14,14 @@ class KNNManager():
             os.path.dirname(os.path.abspath(__file__)) + "/../datasets/t10k-labels-idx1-ubyte.gz",
         ).getMatrices()
 
+    def _getEuclidianDistance(self, x, y): #get the euclidian distance between 2 matrices
+        return np.sqrt(np.sum(x - y)**2);
+    
+    def _getKNearestNeighbors(self, k, sortedDistances):
+        kDistances = sortedDistances[:k]
+        return [x[1] for x in kDistances]
+    
     def train(self, batchSize):
-        def _getEuclidianDistance(x, y): #get the euclidian distance between 2 matrices
-            return np.sqrt(np.sum(x - y)**2);
-
-        def _getKNearestNeighbors(k, sortedDistances):
-            kDistances = sortedDistances[:k]
-            return [x[1] for x in kDistances]
     
         def _getAccuraryPercentage(correspondingLabels):
             accuracy = 0;
@@ -38,9 +39,9 @@ class KNNManager():
                 sys.stdout.flush()
                 distances = []
                 for j in range(len(self.matrices['trainingImages'][:batchSize])):
-                    distances.append( ( _getEuclidianDistance(self.matrices['trainingImages'][i], self.matrices['trainingImages'][j]), self.matrices['trainingLabels'][j]) )
+                    distances.append( ( self._getEuclidianDistance(self.matrices['trainingImages'][i], self.matrices['trainingImages'][j]), self.matrices['trainingLabels'][j]) )
                 distances.sort(key = lambda x : x[0])
-                kNearestNeighbors = _getKNearestNeighbors(kValues[kIndex][0], distances)
+                kNearestNeighbors = self._getKNearestNeighbors(kValues[kIndex][0], distances)
                 correspondingLabels.append( max( kNearestNeighbors, key=kNearestNeighbors.count ) ) #for each image, we adds most propable neigbor for the current value of k
             kValues[kIndex] = (kValues[kIndex][0], _getAccuraryPercentage(correspondingLabels))
         kValuesTable = AsciiTable(
@@ -50,3 +51,15 @@ class KNNManager():
             ]
         )
         print(kValuesTable.table)
+
+    def guessDigit(self, k, testingDigitIndex, batchSize): #batchSize should be around 1000 with a correct k value
+       
+        distances = []
+        for i in range(len(self.matrices['testingImages'][:batchSize])):
+            distances.append( (self._getEuclidianDistance( self.matrices['testingImages'][testingDigitIndex], self.matrices['testingImages'][i] ), self.matrices['testingLabels'][i]) )
+        distances.sort(key = lambda x : x[0]) #sort by distance
+        kNearestNeighbors = self._getKNearestNeighbors(k, distances)
+        value = max( kNearestNeighbors, key=kNearestNeighbors.count )
+        print(f"Guessed value : {value} | Real value : {self.matrices['testingLabels'][testingDigitIndex]} | correct : {self.matrices['testingLabels'][testingDigitIndex] == value}")                   
+
+            
