@@ -42,7 +42,7 @@ class KNNManager():
                     distances.append( ( self._getEuclidianDistance(self.matrices['trainingImages'][i], self.matrices['trainingImages'][j]), self.matrices['trainingLabels'][j]) )
                 distances.sort(key = lambda x : x[0])
                 kNearestNeighbors = self._getKNearestNeighbors(kValues[kIndex][0], distances)
-                correspondingLabels.append( max( kNearestNeighbors, key=kNearestNeighbors.count ) ) #for each image, we adds most propable neigbor for the current value of k
+                correspondingLabels.append( max( kNearestNeighbors, key=kNearestNeighbors.count ) ) #for each image, we add the most propable neigbor for the current value of k
             kValues[kIndex] = (kValues[kIndex][0], _getAccuraryPercentage(correspondingLabels))
         kValuesTable = AsciiTable(
             [
