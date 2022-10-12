@@ -52,10 +52,10 @@ class KNNManager():
         )
         print(kValuesTable.table)
 
-    def guessDigit(self, k, testingDigitIndex, batchSize): #batchSize should be around 1000 with a correct k value
+    def guessDigit(self, k, testingDigitIndex):
        
         distances = []
-        for i in range(len(self.matrices['testingImages'][:batchSize])):
+        for i in range(len(self.matrices['testingImages'])):
             distances.append( (self._getEuclidianDistance( self.matrices['testingImages'][testingDigitIndex], self.matrices['testingImages'][i] ), self.matrices['testingLabels'][i]) )
         distances.sort(key = lambda x : x[0]) #sort by distance
         kNearestNeighbors = self._getKNearestNeighbors(k, distances)
