@@ -40,7 +40,15 @@ class MNISTManager():
         for i in range(len(images)):
             greyMeans[labels[i]] += np.mean(images[i])
         return [greyMeans[i] / np.count_nonzero(labels == i) for i in range(10)] #divide each value by the total number of the digit to get the mean value
-        
+    
+    def getMatrices(self):
+        return { 
+            "trainingImages": self.trainingImages.reshape(60000, 28, 28, ), 
+            "trainingLabels": self.trainingLabels,
+            "testingImages": self.testingImages.reshape(10000, 28, 28, ),
+            "testingLabels": self.testingLabels,
+        }
+
     def show(self, index, datasetType): #datasetType = "training" or "testing"
         image = np.asarray(self.trainingImages[index]).squeeze() if datasetType == "training" else  np.asarray(self.testingImages[index]).squeeze()
         plt.imshow(image)
