@@ -16,8 +16,8 @@ class MNISTManager():
         self.trainingImages = self._getImageData(trainingSetImagesPath, 60000)
         self.trainingLabels = self._getLabelData(trainingSetLabelsPath, 60000)
         self.testingImages = self._getImageData(testingSetImagesPath, 10000)
-        self.testingLabels = self._getLabelData(testingSetLabelsPath, 10000)      
-       
+        self.testingLabels = self._getLabelData(testingSetLabelsPath, 10000)
+
 
     def _getImageData(self, path, size):
         fileBuffer = gzip.open(path,'r')

@@ -20,7 +20,7 @@ class KNNManager():
     def _getKNearestNeighbors(self, k, sortedDistances):
         kDistances = sortedDistances[:k]
         return [x[1] for x in kDistances]
-    
+
     def train(self, batchSize):
     
         def _getAccuraryPercentage(correspondingLabels):
@@ -31,7 +31,6 @@ class KNNManager():
             return (accuracy / len(correspondingLabels) * 100)
 
         kValues = [(3, 0),(5, 0), (7, 0), (9, 0)]  #[(kNeigbors, accuracyPercentage)]
-
         for kIndex in range(len(kValues)):
             correspondingLabels = [] # for each image, we store is found label
             for i in range(len(self.matrices['trainingImages'][:batchSize])):
@@ -53,13 +52,10 @@ class KNNManager():
         print(kValuesTable.table)
 
     def guessDigit(self, k, testingDigitIndex):
-       
         distances = []
         for i in range(len(self.matrices['testingImages'])):
             distances.append( (self._getEuclidianDistance( self.matrices['testingImages'][testingDigitIndex], self.matrices['testingImages'][i] ), self.matrices['testingLabels'][i]) )
         distances.sort(key = lambda x : x[0]) #sort by distance
         kNearestNeighbors = self._getKNearestNeighbors(k, distances)
         value = max( kNearestNeighbors, key=kNearestNeighbors.count )
-        print(f"Guessed value : {value} | Real value : {self.matrices['testingLabels'][testingDigitIndex]} | correct : {self.matrices['testingLabels'][testingDigitIndex] == value}")                   
-
-            
+        print(f"Guessed value : {value} | Real value : {self.matrices['testingLabels'][testingDigitIndex]} | correct : {self.matrices['testingLabels'][testingDigitIndex] == value}")
